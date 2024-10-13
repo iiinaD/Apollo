@@ -3,17 +3,15 @@ package main
 import (
 	"fmt"
 	"github.com/charmbracelet/glamour"
-	"github.com/google/generative-ai-go/genai"
 )
 
-var BLUE_BOLD_UNDERLINE = "\033[0;4;34m"
-var RESET string = "\033[0m"
+var BLUE_BOLD_UNDERLINE = "\033[0;1;4;34m"
+var YELLOW_BOLD_UNDERLINE = "\033[0;1;4;33m"
+var RESET = "\033[0m"
+var GREEN = "\033[0;32m"
 
-func printResponse(resp *genai.GenerateContentResponse) {
+func printResponse(text string) {
 	fmt.Printf("\n%sGEMENI:%s\n", BLUE_BOLD_UNDERLINE, RESET)
-	cand := resp.Candidates[0]
-	text := fmt.Sprintf("%s", cand.Content.Parts[0])
-
 	r, err := glamour.NewTermRenderer(
 		// detect background color and pick either the default dark or light theme
 		glamour.WithAutoStyle(),
