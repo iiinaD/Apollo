@@ -1,62 +1,42 @@
 package main
 
 import (
-	"context"
-	"errors"
+	"bufio"
 	"fmt"
-	"github.com/google/generative-ai-go/genai"
-	"google.golang.org/api/iterator"
-	"google.golang.org/api/option"
 	"log"
 	"os"
+	"sync"
 )
 
-var client *genai.Client = nil
-var model *genai.GenerativeModel = nil
+var wg = sync.WaitGroup{}
 
 func main() {
+	defer CloseClient()
+	wg.Add(1)
+	go InitClient()
 
-	if len(os.Args) <= 1 {
-		fmt.Println("Please provide an action for Apollo")
+	if len(os.Args) == 2 {
+		text := os.Args[1]
+		wg.Wait()
+		res, _ := GenerateText(text)
+		printResponse(res)
 		return
 	}
-	text := os.Args[1]
 
-	ctx := context.Background()
-	client, err := genai.NewClient(ctx, option.WithAPIKey(os.Getenv("API_KEY")))
-	handleError(err)
-	model = client.GenerativeModel("gemini-1.5-flash")
-	defer client.Close()
-
-	res := GenerateText(text)
-
-	readFromResponseStream(res)
+	scanner := bufio.NewScanner(os.Stdin)
+	fmt.Printf("Welcome to Apollo!\n\n Start chatting by writing a prompt:\n-> ")
+	for scanner.Scan() {
+		text := scanner.Text()
+		fmt.Println(text)
+		if text == "q" {
+			break
+		}
+		fmt.Printf("-> ")
+	}
 }
 
 func handleError(err error) {
 	if err != nil {
 		log.Fatal(err)
-	}
-}
-
-func readFromResponseStream(iter *genai.GenerateContentResponseIterator) {
-	for {
-		res, err := iter.Next()
-		if errors.Is(err, iterator.Done) {
-			fmt.Println("---")
-			break
-		}
-		handleError(err)
-		printResponse(res)
-	}
-}
-
-func printResponse(resp *genai.GenerateContentResponse) {
-	for _, cand := range resp.Candidates {
-		if cand.Content != nil {
-			for _, part := range cand.Content.Parts {
-				fmt.Printf("%s", part)
-			}
-		}
 	}
 }
