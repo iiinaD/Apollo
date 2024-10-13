@@ -50,6 +50,7 @@ if [[ -n "$SHELL_RC_FILE" ]]; then
   fi
 
   echo "Installation complete!"
+  exec $SHELL
 else
   echo "Unsupported shell. Please use bash or zsh."
 fi
