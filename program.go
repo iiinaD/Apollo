@@ -72,6 +72,9 @@ func extendHistory(history []*genai.Content, text string, role string) []*genai.
 
 func handleError(err error) {
 	if err != nil {
+		runSpinner = false
+		wgSpinner.Wait()
+		fmt.Println("Something happened and the program has stopped.")
 		log.Fatal(err)
 	}
 }
