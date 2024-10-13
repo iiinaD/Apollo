@@ -21,18 +21,21 @@ func main() {
 	wg.Add(1)
 	go InitClient()
 
+	go spinner()
+	
 	ctx := context.Background()
 
 	if len(os.Args) == 2 {
+		runSpinner = true
 		text := os.Args[1]
 		wg.Wait()
 		res, _ := model.GenerateContent(ctx, genai.Text(text))
 		resText := getText(res)
+		runSpinner = false
+		wgSpinner.Wait()
 		printResponse(resText)
 		return
 	}
-
-	go spinner()
 
 	var history []*genai.Content
 	wg.Wait()
