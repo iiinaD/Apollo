@@ -3,7 +3,7 @@
 ## Description
 Apollo is a commandline client for prompting Google's
 Generative AI 'Gemeni'. This client is made purely in go using
-Gemeni's [API](https://ai.google.dev/gemini-api/docs) and [glamour](https://github.com/charmbracelet/glamour).
+Gemeni's [API](https://ai.google.dev/gemini-api) and [glamour](https://github.com/charmbracelet/glamour).
 
 ## Before Installation
 Before installing Apollo you need to create you own Gemeni API key. 
