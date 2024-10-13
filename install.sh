@@ -4,12 +4,12 @@
 sudo go build -o apollo
 
 # Prompt for Gemini API key
-read -p "Enter your Gemini API key: " GEMENI_API_KEY
+read -rp "Enter your Gemini API key: " GEMENI_API_KEY
 
 # Prompt for theme (optional)
-read -p "Do you want to use a special theme (y/n)? " theme_choice
+read -rp "Do you want to use a special theme (y/n)? " theme_choice
 if [[ $theme_choice == "y" ]]; then
-  read -p "Enter your theme name: " APOLLO_OUTPUT_THEME
+  read -rp "Enter your theme name: " APOLLO_OUTPUT_THEME
 fi
 
 # Move the built program
@@ -28,18 +28,22 @@ fi
 
 if [[ -n "$SHELL_RC_FILE" ]]; then
   if ! grep -q "export GEMENI_API_KEY=" ~/$SHELL_RC_FILE; then
-    echo "" >> ~/$SHELL_RC_FILE
-    echo "# api for google's generative ai 'gemeni'" >> ~/$SHELL_RC_FILE
-    echo "export GEMENI_API_KEY=\"$GEMENI_API_KEY\"" >> ~/$SHELL_RC_FILE
+    {
+      echo ""
+      echo "# api for google's generative ai 'gemeni'"
+      echo "export GEMENI_API_KEY=\"$GEMENI_API_KEY\""
+    } >> ~/$SHELL_RC_FILE
   else
     echo "GEMENI_API_KEY is already set in $SHELL_RC_FILE"
   fi
 
   if [[ -n "$APOLLO_OUTPUT_THEME" ]]; then
     if ! grep -q "export APOLLO_OUTPUT_THEME=" ~/$SHELL_RC_FILE; then
-      echo "" >> ~/$SHELL_RC_FILE
-      echo "# this is the custom theme for Apollo" >> ~/$SHELL_RC_FILE
-      echo "export APOLLO_OUTPUT_THEME=\"$APOLLO_OUTPUT_THEME\"" >> ~/$SHELL_RC_FILE
+      {
+        echo ""
+        echo "# this is the custom theme for Apollo"
+        echo "export APOLLO_OUTPUT_THEME=\"$APOLLO_OUTPUT_THEME\""
+      } >> ~/$SHELL_RC_FILE
     else
       echo "APOLLO_OUTPUT_THEME is already set in $SHELL_RC_FILE"
     fi
