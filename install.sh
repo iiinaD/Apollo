@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build the Go program
-sudo go build -o apollo
+sudo go build -o apollo ./src
 
 # Prompt for Gemini API key
 read -rp "Enter your Gemini API key: " GEMENI_API_KEY

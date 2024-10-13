@@ -1,4 +1,4 @@
-module Apollo
+module github.com/iiinaD/Apollo
 
 go 1.22
 
